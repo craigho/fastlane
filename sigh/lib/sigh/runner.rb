@@ -205,7 +205,6 @@ module Sigh
       end
       profile_name += '.mobileprovision' unless profile_name.include? 'mobileprovision'
 
-
       tmp_path = Dir.mktmpdir("profile_download")
       output_path = File.join(tmp_path, profile_name)
       File.open(output_path, "wb") do |f|
