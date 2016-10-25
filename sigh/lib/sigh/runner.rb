@@ -202,7 +202,11 @@ module Sigh
     # Downloads and stores the provisioning profile
     def download_profile(profile)
       UI.important "Downloading provisioning profile..."
-      profile_name ||= "#{profile_type.pretty_type}_#{Sigh.config[:app_identifier]}.mobileprovision" # default name
+      if Sigh.config[:download_profiles_by_name]
+        profile_name ||= "#{profile_type.pretty_type}_#{profile.name}.mobileprovision"
+      else
+        profile_name ||= "#{profile_type.pretty_type}_#{Sigh.config[:app_identifier]}.mobileprovision" # default name
+      end
       profile_name += '.mobileprovision' unless profile_name.include? 'mobileprovision'
 
       tmp_path = Dir.mktmpdir("profile_download")
