@@ -127,8 +127,6 @@ module Sigh
       cert = certificate_to_use
       bundle_id = Sigh.config[:app_identifier]
       name = Sigh.config[:provisioning_name] || [bundle_id, profile_type.pretty_type].join(' ')
-      devlist = []
-      devlist << Spaceship.device.find_by_udid(Sigh.config[:add])
 
       unless Sigh.config[:skip_fetch_profiles]
         if Spaceship.provisioning_profile.all.find { |p| p.name == name }
@@ -137,6 +135,9 @@ module Sigh
         end
       end
       if Sigh.config[:add]
+        devlist = []
+        devlist << Spaceship.device.find_by_udid(Sigh.config[:add])
+
         UI.important "Creating new provisioning profile for '#{Sigh.config[:app_identifier]}' with name '#{name}' and UDID '#{Sigh.config[:add]}'"
         profile = profile_type.create!(name: name,
                                   bundle_id: bundle_id,
