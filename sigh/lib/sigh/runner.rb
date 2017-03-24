@@ -134,11 +134,22 @@ module Sigh
           name += " #{Time.now.to_i}"
         end
       end
+      if Sigh.config[:add]
+        devlist = []
+        devlist << Spaceship.device.find_by_udid(Sigh.config[:add])
 
-      UI.important "Creating new provisioning profile for '#{Sigh.config[:app_identifier]}' with name '#{name}'"
-      profile = profile_type.create!(name: name,
-                                bundle_id: bundle_id,
-                              certificate: cert)
+        UI.important "Creating new provisioning profile for '#{Sigh.config[:app_identifier]}' with name '#{name}' and UDID '#{Sigh.config[:add]}'"
+        profile = profile_type.create!(name: name,
+                                  bundle_id: bundle_id,
+                                certificate: cert,
+                                 devices: devlist)
+ 
+      else
+        UI.important "Creating new provisioning profile for '#{Sigh.config[:app_identifier]}' with name '#{name}'"
+        profile = profile_type.create!(name: name,
+                                  bundle_id: bundle_id,
+                                certificate: cert)
+      end
       profile
     end
 
